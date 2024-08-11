@@ -1,0 +1,72 @@
+﻿@model PetProject.Models.Animal
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_Layout";
+    var Model = ViewBag.animalD;
+    var CommenModel = ViewBag.Comment;
+}
+
+
+
+@if (Model != null)
+{
+    <h1 class="text-3xl font-bold text-orange-500 mb-4">Meet our @Model.Name :</h1>
+    <div class="bg-white p-4 rounded shadow-md relative grid grid-cols-1 md:grid-cols-2 gap-4">
+        <img src="~/Images/@Model.PictureName" class="w-full h-48 object-contain rounded-full mb-4 md:mb-0 " asp-append-version="true" alt="@Model.PictureName" />
+        <div class="flex flex-col justify-center">
+            <table class="table-auto w-full border-2 border-gray-400">
+                <tbody>
+                    <tr class="bg-white py-4 border-b border-gray-400">
+                        <td class="font-semibold text-lg pr-4 border-r border-gray-400">Name:</td>
+                        <td class="text-lg pl-4">@Model.Name</td>
+                    </tr>
+                    <tr class="bg-orange-100 py-4 border-b border-gray-400">
+                        <td class="font-semibold text-lg pr-4 border-r border-gray-400">Category:</td>
+                        <td class="text-lg pl-4">@Model.Category.Name</td>
+                    </tr>
+                    <tr class="bg-white py-4 border-b border-gray-400">
+                        <td class="font-semibold text-lg pr-4 border-r border-gray-400">Age:</td>
+                        <td class="text-lg pl-4">@Model.Age</td>
+                    </tr>
+                    <tr class="bg-orange-100 py-4 border-b border-gray-400">
+                        <td class="font-semibold text-lg pr-4 border-r border-gray-400">Description:</td>
+                        <td class="text-lg pl-4 break-all">@Model.Description</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="bg-white p-4 rounded shadow-md hover:shadow-lg transition-shadow duration-300 relative mt-6">
+    <h2 class="text-2xl font-semibold mb-4">Comments</h2>
+    <div class="mb-4">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="mb-2 p-2 border rounded bg-orange-100">
+                    <p class="text-md max-w-1/2 break-words">@comment.CommentText</p>
+                <p class="text-xs text-gray-500 text-right">@comment.Date.ToString("g")</p>
+            </div>
+        }
+    </div>
+        <form asp-action="AddComment" method="post" class="flex flex-col">
+            <input type="hidden" asp-for="AnimalId" value="@Model.AnimalId" />
+
+            <div class="relative mb-2">
+                <textarea name="comment" class="w-full border rounded p-2" placeholder="Add a comment" maxlength="200" id="commentTextarea" oninput="updateCommentCharCount()"></textarea>
+                <div id="commentCharCount" class="absolute bottom-0 right-0 mb-2 mr-2 text-gray-700 text-sm">0/200</div>
+            </div>
+            <input type="submit" value="Send" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-24 self-center" onclick="return validateComment()">
+            
+        </form>
+
+</div>
+   
+}
+else
+{
+    <br />
+    <p class="text-center text-2xl text-black-500">Something went wrong :(</p>
+    <br />
+}
+
+
+                  

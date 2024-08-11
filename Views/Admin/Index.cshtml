@@ -1,0 +1,70 @@
+﻿@model IEnumerable<PetProject.Models.Animal>
+
+
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "_Layout";
+    var categories = ViewBag.Categories as List<string>;
+    var selectedCategory = ViewBag.SelectedCategory;
+}
+
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-orange-500">Our Animals:</h1>
+    <form asp-action="Index" method="get" class="flex items-center">
+        <select name="SelectedCategory" class="border border-gray-300 rounded p-2 mr-2" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            @foreach (var category in categories)
+            {
+                if (category == selectedCategory)
+                {
+                    <option value="@category" selected>@category</option>
+                }
+                else
+                {
+                    <option value="@category">@category</option>
+                }
+            }
+        </select>
+    </form>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-center text-2xl text-black-500">Sorry, no animals available in this category.</p>
+    <br />
+}
+else
+{
+    
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center bg-opacity-80">
+    @foreach (var pet in Model)
+    {
+        <div class=" p-4 w-full rounded shadow-md hover:shadow-lg transition-shadow bg-gray-500 bg-opacity-80 duration-300 flex flex-col">
+            <h3 class="text-xl text-center font-semibold mb-2">@pet.Name</h3>
+            <img src="~/Images/@pet.PictureName" class="w-full h-48 object-contain rounded mb-4" asp-append-version="true" alt="@pet.PictureName" />
+            <p><strong>Age:</strong> @pet.Age</p>
+                <p class="break-all"><strong>Description:</strong> @pet.Description</p>
+            @{
+                int id = pet.AnimalId;
+            }
+
+            <br />
+            <div class="mt-auto">
+                <div class="flex justify-center">
+                    <a href="@Url.Action("Details", "Admin",new { animalId = pet.AnimalId })" class="bg-stone-700 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded">Details</a>
+                </div>
+            </div>
+            
+        </div>
+    }
+</div>
+
+}
+<div class="p-4 rounded transition-shadow bg-opacity-80 duration-300 flex flex-col items-center justify-center">
+    <h3 class="text-xl text-center font-semibold mb-2"></h3>
+    <div class="mt-auto">
+        <div class="flex justify-center">
+            <a href="@Url.Action("Create", "Admin")" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add New Animal</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PetProject.Models.Animal>
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center text-2xl font-bold text-orange-500">Our Top Animals:</h2>
+<br />
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-gray-100 bg-opacity-0 backdrop-blur-sm md:flex md:justify-center">
+
+    @foreach (var pet in Model)
+    {
+        <div class="bg-white p-4 rounded shadow-md hover:shadow-lg transition-shadow bg-opacity-80 duration-300 relative md:flex-1">
+            <h3 class="text-xl font-semibold mb-2 text-center">@pet.Name</h3>
+            <img src="~/Images/@pet.PictureName" class="w-full h-48 object-contain  mb-4" asp-append-version="true" alt="@pet.PictureName" />
+            <p><strong>Age:</strong> @pet.Age</p>
+            <p class="break-all"><strong>Description:</strong> @pet.Description</p>
+            <br />
+            <div class="absolute bottom-4 right-4 flex items-center">
+                <span class="text-lg mr-2">@(pet.Comments?.Count() ?? 0)</span>
+                @* <i class="fa fa-comment text-yellow-500 "></i> *@
+                <i class="fa-solid fa-comment fa-xl" style="color: #ffbb00;"></i>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+

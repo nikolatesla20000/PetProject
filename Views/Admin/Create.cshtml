@@ -1,0 +1,61 @@
+﻿@model PetProject.Models.Animal
+
+@{
+    ViewData["Title"] = "Add New Animal";
+    Layout = "_Layout";
+}
+
+<h1 class="text-3xl font-bold text-orange-500 mb-4">Add New Animal</h1>
+<div class="flex justify-center">
+    <div class="bg-white p-6 rounded shadow-md w-full max-w-3xl">
+        <div class="flex flex-col md:flex-row items-start">
+            <div class="md:w-1/3 mb-4 md:mb-0">
+                <img id="animalImage" src="~/Images/NewDefault.jpg" class="w-full h-48 object-contain mx-auto" alt="default image" />
+                <div id="errorMessage" class="text-red-500 mt-2 hidden">Invalid image file.</div>
+            </div>
+            <div class="md:w-2/3 md:ml-10">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="block text-gray-700"></label>
+                        <input asp-for="Name" class="w-full px-4 py-2 border rounded" />
+                        <span asp-validation-for="Name" class="text-red-500"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="CategoryId" class="block text-gray-700"></label>
+                        <select asp-for="CategoryId" class="w-full px-4 py-2 border rounded">
+                            @foreach (var category in (IEnumerable<PetProject.Models.Category>)ViewBag.Categories)
+                            {
+                                <option value="@category.CategoryId">@category.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-red-500"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Age" class="block text-gray-700"></label>
+                        <input asp-for="Age" class="w-full px-4 py-2 border rounded" type="number" />
+                        <span asp-validation-for="Age" class="text-red-500"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="block text-gray-700"></label>
+                        <textarea asp-for="Description" class="w-full px-4 py-2 border rounded h-32" maxlength="500" id="descriptionTextarea" oninput="updateCharCount()"></textarea>
+                        <span asp-validation-for="Description" class="text-red-500"></span>
+                        <div id="charCount" class="text-gray-700">0/500</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="PictureName" class="block text-gray-700"></label>
+                        <input type="file" name="NewPicture" class="w-full px-4 py-2 border rounded" onchange="previewImage(event)" accept="image/*" />
+                        <span asp-validation-for="PictureName" class="text-red-500"></span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Animal</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
